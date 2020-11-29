@@ -1,0 +1,14 @@
+{
+    "name": "restaurant",
+    "description": "",
+    "author": "chrislam, ramwong, ryannnnn",
+    "version": "0.0.1",
+    "dependencies": {
+        "mongodb": "3.6.2",
+        "express": "4.17.1"
+    },
+    "engine": "node >=10.19.0",
+    "scripts": {
+        "start": "node server"
+    }
+}

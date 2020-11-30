@@ -41,11 +41,11 @@ app.post('/read', (req, res) => {
     res.send('main page');
 });
 
-// page to implement serach function
+// page to implement search function
 // Search
 //      • by name, borough, cuisine or borough.
-app.get('/serach', (req, res) => {
-    res.send('serach page');
+app.get('/search', (req, res) => {
+    res.send('search page');
 });
 
 // page to create new restaurant document
@@ -73,7 +73,7 @@ app.get('/new', (req, res) => {
     res.send('create document page');
 });
 
-// page to show created docuemnt
+// page to show created document
 // can redirect to rate, edit, remove, main page
 // Read
 // Display restaurant documents

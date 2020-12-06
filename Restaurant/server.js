@@ -7,7 +7,7 @@ const app = express();
 // Login Page
 // Read (user collection)
 app.get('/', (req, res) => {
-    res.send('Login Page');
+    res.render('index');
 });
 
 // Page to handle user login

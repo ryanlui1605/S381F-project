@@ -4,8 +4,9 @@
     "author": "chrislam, ramwong, ryannnnn",
     "version": "0.0.1",
     "dependencies": {
+        "express": "4.17.1",
         "mongodb": "3.6.2",
-        "express": "4.17.1"
+        "nodemon": "^2.0.6"
     },
     "engine": "node >=10.19.0",
     "scripts": {

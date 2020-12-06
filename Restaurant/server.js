@@ -1,6 +1,11 @@
 const express = require('express');
 const url = require('url');
 const app = express();
+const formidable = require('formidable');
+
+const mongodbConnect = require('./utils/db').mongodbConnect;
+const User = require('./models/user');
+const { stat } = require('fs');
 
 // set default engine to view ejs
 app.set('view engine', 'ejs');
@@ -25,13 +30,27 @@ app.post('/processlogin', (req, res) => {
 // Create user accounts
 //      - Each user account has a userid and password. 
 app.get('/reg', (req, res) => {
-    res.send('create user page');
+    res.render('reg');
 });
 
 // Page to handle user reg
-app.post('/processlogin', (req, res) => {
+app.post('/processreg', (req, res) => {
     // code here
-    res.redirect('/read');
+    const form = new formidable.IncomingForm();
+    form.parse(req, (err, fields, files) => {
+        //check password==confirm
+        if (fields.password != fields.confirm) {
+            res.redirect('/reg');
+        }
+        const user = new User(fields.username, fields.password);
+        user.createNewUser((status) => {
+            if (status) {
+                res.end('success');
+            } else {
+                res.end('fail');
+            }
+        });
+    })
 });
 
 // page to show 
@@ -190,5 +209,6 @@ app.get(/api\/restaurant\/cuisine\/.*/, (req, res) => {
 
 
 
-
-const server = app.listen(process.env.PORT || 8099);
+mongodbConnect(() => {
+    app.listen(process.env.PORT || 8099);
+});

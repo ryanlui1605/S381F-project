@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <title>Register</title>
+</head>
+
+<body style="text-align: center;">
+    <header>
+        <h1>Register</h1>
+    </header>
+    <form name="regform" action="/processreg" onsubmit="return check()" method="POST">
+        <label>Name</label>
+        <input name="username" type="text" required />
+        <br />
+        <br />
+        <label>Password</label>
+        <input name="password" type="password" required/>
+        <br />
+        <br />
+        <label>Confirm Password</label>
+        <input name="confirm" type="password" required/>
+        <br />
+        <br />
+        <input type="submit" value="Register" />
+
+    </form>
+    <script>
+        function check(){
+            let password = document.forms["regform"]["password"].value;
+            let confirm = document.forms["regform"]["confirm"].value;
+            if(password!=confirm){
+                alert("Password not match");
+            }
+            return password=="" || (password!=confirm) ? false : true;                
+        }
+    </script>
+</body>
+
+</html>

@@ -2,6 +2,9 @@ const express = require('express');
 const url = require('url');
 const app = express();
 
+// set default engine to view ejs
+app.set('view engine', 'ejs');
+
 // handler for having page
 
 // Login Page

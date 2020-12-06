@@ -32,16 +32,38 @@ app.get('/reg', (req, res) => {
 app.post('/processlogin', (req, res) => {
     // code here
     res.redirect('/read');
-})
+});
 
 // page to show 
 // user name
 // number of document
 // button redirect to create new document
 // list of restaurant name with link
+// testing object for read
+class testing {
+    constructor() {
+        this.username = 1;
+        this.restaurants =
+            [
+                {
+                    _id: 123,
+                    name: "fuck"
+                },
+                {
+                    _id: 124,
+                    name: "fuck2"
+                }
+            ]
+        this.numberOfRestaurant = this.restaurants.length;
+    }
+}
+const testing1 = new testing();  // end of creating testing object
 // Read
-app.post('/read', (req, res) => {
-    res.send('main page');
+app.get('/read', (req, res) => {
+    res.render(
+        'read',
+        testing1
+    );
 });
 
 // page to implement search function
@@ -121,7 +143,7 @@ app.get('/change', (req, res) => {
 });
 
 // page to handle editing restaurant document
-app.post('/change', (req,res)=>{
+app.post('/change', (req, res) => {
     // show display view
 })
 
@@ -137,29 +159,29 @@ app.get('/remove', (req, res) => {
 // handler for RESTful services
 // not sure is it correct
 
-app.get(/api\/restaurant\/name\/.*/,(req,res)=>{
-    const parseUrl = url.parse(req.url,true);
+app.get(/api\/restaurant\/name\/.*/, (req, res) => {
+    const parseUrl = url.parse(req.url, true);
 
     //get restaurant name
-    const name = parseUrl.pathname.replace('/api/restaurant/name/','');
+    const name = parseUrl.pathname.replace('/api/restaurant/name/', '');
 
     res.send(name);
 });
 
-app.get(/api\/restaurant\/borough\/.*/,(req,res)=>{
-    const parseUrl = url.parse(req.url,true);
-    
+app.get(/api\/restaurant\/borough\/.*/, (req, res) => {
+    const parseUrl = url.parse(req.url, true);
+
     //get restaurant borough
-    const borough = parseUrl.pathname.replace('/api/restaurant/borough/','');
+    const borough = parseUrl.pathname.replace('/api/restaurant/borough/', '');
 
     res.send(borough);
 })
 
-app.get(/api\/restaurant\/cuisine\/.*/,(req,res)=>{
-    const parseUrl = url.parse(req.url,true);
+app.get(/api\/restaurant\/cuisine\/.*/, (req, res) => {
+    const parseUrl = url.parse(req.url, true);
 
     //get restaurant cuisine
-    const cuisine = parseUrl.pathname.replace('/api/restaurant/cuisine/','');
+    const cuisine = parseUrl.pathname.replace('/api/restaurant/cuisine/', '');
 
     res.send(cuisine);
 })

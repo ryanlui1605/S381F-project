@@ -13,14 +13,21 @@ exports.getHomePage = (req, res) => {
 // success = redirect to homePage
 // fail = redirect to readPage
 exports.processLogin = (req, res) => {
+    // code here
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
-
+        const username = fields.username;
+        const password = fields.password;
+        const user = new User(username, password);
+        user.login((status) => {
+            if (status) {
+                res.redirect('/read');
+            } else {
+                res.end('fail');
+            }
+        })
     })
-    // code here
-    res.redirect('/read');
 };
-
 
 // Page to create user
 // Create
@@ -35,12 +42,15 @@ exports.processReg = (req, res) => {
     // code here
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
+        const username = fields.username;
+        const password = fields.password;
+        const confirm = fields.confirm;
         //double check by server side
-        if (fields.password != fields.confirm || // check password = confirm password
-            fields.password == '' || fields.username == '') {   // check empty input
-            res.back();   // if something get wrong, back to /reg
+        if (password != confirm || // check password = confirm password
+            password == '' || username == '') {   // check empty input
+            res.redirect('/reg');   // if something get wrong, back to /reg
         }
-        const user = new User(fields.username, fields.password);
+        const user = new User(username, password);
         user.createNewUser((status) => {
             if (status) {
                 res.end('success');

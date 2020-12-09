@@ -1,13 +1,16 @@
 const express = require('express');
 const url = require('url');
 const app = express();
+const session = require('cookie-session');
 
 const mongodbConnect = require('./utils/db').mongodbConnect;
 const userRoutes = require('./routes/user');
 
 // set default engine to view ejs
 app.set('view engine', 'ejs');
-
+// app.use(session({
+//     name: 'user',
+// }))
 // handler for having page
 
 app.use(userRoutes);

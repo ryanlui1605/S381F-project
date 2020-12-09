@@ -8,7 +8,8 @@
         "mongodb": "*",
         "nodemon": "*",
         "ejs": "*",
-        "formidable": "*"
+        "formidable": "*",
+        "cookie-session": "*"
     },
     "engine": "node >=10.19.0",
     "scripts": {

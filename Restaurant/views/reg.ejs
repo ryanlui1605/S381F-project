@@ -29,35 +29,16 @@
             // Validate input at client side
 
             // get username, password, confirm password
-            const username = document.forms["regform"]["username"].value;
             const password = document.forms["regform"]["password"].value;
             const confirm = document.forms["regform"]["confirm"].value;
 
-            // default value to return
-            let isValid = true;
-
             // function to send alert and set return value to false;
-            const alertUser = (alertMessage) => {
-                alert(alertMessage);
-                isValid = false;
-            }
-            if (username == "") {
-                // check username is not empty
-                alertUser("Username cannot be empty")
-            }
-            else if (password == "") {
-                // check password is not empty
-                alertUser("Password cannot be empty");
-            }
-            else if (confirm == "") {
-                // check confirm password is not empty
-                alertUser("Please confirm the password");
-            }
-            else if (password != confirm) {
+            if (password != confirm) {
                 // chkeck password is equal to confirm password
-                alertUser("Password not match");
+                alert("Password not match");
+                return false;
             }
-            return isValid;     // return checking result
+            return true;     // return checking result
         }
 
     </script>

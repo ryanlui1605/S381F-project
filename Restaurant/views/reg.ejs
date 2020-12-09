@@ -14,25 +14,52 @@
         <br />
         <br />
         <label>Password</label>
-        <input name="password" type="password" required/>
+        <input name="password" type="password" required />
         <br />
         <br />
         <label>Confirm Password</label>
-        <input name="confirm" type="password" required/>
+        <input name="confirm" type="password" required />
         <br />
         <br />
         <input type="submit" value="Register" />
 
     </form>
     <script>
-        function check(){
-            let password = document.forms["regform"]["password"].value;
-            let confirm = document.forms["regform"]["confirm"].value;
-            if(password!=confirm){
-                alert("Password not match");
+        function check() {
+            // Validate input at client side
+
+            // get username, password, confirm password
+            const username = document.forms["regform"]["username"].value;
+            const password = document.forms["regform"]["password"].value;
+            const confirm = document.forms["regform"]["confirm"].value;
+
+            // default value to return
+            let isValid = true;
+
+            // function to send alert and set return value to false;
+            const alertUser = (alertMessage) => {
+                alert(alertMessage);
+                isValid = false;
             }
-            return password=="" || (password!=confirm) ? false : true;                
+            if (username == "") {
+                // check username is not empty
+                alertUser("Username cannot be empty")
+            }
+            else if (password == "") {
+                // check password is not empty
+                alertUser("Password cannot be empty");
+            }
+            else if (confirm == "") {
+                // check confirm password is not empty
+                alertUser("Please confirm the password");
+            }
+            else if (password != confirm) {
+                // chkeck password is equal to confirm password
+                alertUser("Password not match");
+            }
+            return isValid;     // return checking result
         }
+
     </script>
 </body>
 

@@ -15,12 +15,11 @@ class User {
     // Create
     // user(reg) collections
     // handle result in callback
-    
+
     createNewUser(callback) {
         const db = getDb();
         //check username exist
-        db.collection('users').countDocuments({ "username": this.username }, (err, count) => {
-            assert.equal(null, err);
+        this.checkDuplicateUserName(db, (count) => {
             if (count > 0) {
                 //if username exist
                 callback(false);
@@ -31,6 +30,14 @@ class User {
                     callback(true);
                 })
             }
+        });
+
+    }
+
+    checkDuplicateUserName(db, callback) {
+        db.collection('users').countDocuments({ "username": this.username }, (err, count) => {
+            assert.equal(null, err);
+            callback(count);
         });
     }
 

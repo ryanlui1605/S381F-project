@@ -21,9 +21,10 @@ exports.processLogin = (req, res) => {
         const user = new User(username, password);
         user.login((status) => {
             if (status) {
+                req.session.username = username;
                 res.redirect('/read');
             } else {
-                res.end('fail');
+                res.render('loginfail');
             }
         })
     })
@@ -53,9 +54,10 @@ exports.processReg = (req, res) => {
         const user = new User(username, password);
         user.createNewUser((status) => {
             if (status) {
-                res.end('success');
+                res.session.username = username;
+                res.redirect('/read');
             } else {
-                res.end('fail');
+                res.render('regfail');
             }
         });
     })

@@ -1,57 +1,16 @@
 const express = require('express');
 const url = require('url');
 const app = express();
-const formidable = require('formidable');
 
 const mongodbConnect = require('./utils/db').mongodbConnect;
-const User = require('./models/user');
-const { stat } = require('fs');
+const userRoutes = require('./routes/user');
 
 // set default engine to view ejs
 app.set('view engine', 'ejs');
 
 // handler for having page
 
-// Login Page
-// Read (user collection)
-app.get('/', (req, res) => {
-    res.render('index');
-});
-
-// Page to handle user login
-app.post('/processlogin', (req, res) => {
-    // code here
-    res.redirect('/read');
-})
-
-
-// Page to create user
-// Create
-// Create user accounts
-//      - Each user account has a userid and password. 
-app.get('/reg', (req, res) => {
-    res.render('reg');
-});
-
-// Page to handle user reg
-app.post('/processreg', (req, res) => {
-    // code here
-    const form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {
-        //check password==confirm
-        if (fields.password != fields.confirm) {
-            res.redirect('/reg');
-        }
-        const user = new User(fields.username, fields.password);
-        user.createNewUser((status) => {
-            if (status) {
-                res.end('success');
-            } else {
-                res.end('fail');
-            }
-        });
-    })
-});
+app.use(userRoutes);
 
 // page to show 
 // user name

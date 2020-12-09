@@ -19,7 +19,7 @@ class User {
     createNewUser(callback) {
         const db = getDb();
         //check username exist
-        db.collection('users').count({ "username": this.username }, (err, count) => {
+        db.collection('users').countDocuments({ "username": this.username }, (err, count) => {
             assert.equal(null, err);
             if (count > 0) {
                 //if username exist

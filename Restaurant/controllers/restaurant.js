@@ -1,67 +1,50 @@
+const { json, response } = require('express');
+const http = require('http');
+
 const restaurant = require('../models/restaurant');
 
-exports.getRestaurantByName = (req,res)=>{
+// API
+exports.getRestaurantByName = (req, res) => {
     const restaurantName = req.params.name;
-    const doc= restaurantName ? {name:restaurantName}:{};
-    getResult(doc,res);
+    const doc = restaurantName ? { name: restaurantName } : restaurantName;
+    getResult(doc, res);
 }
 
-exports.getRestaurantByBorough = (req,res)=>{
+exports.getRestaurantByBorough = (req, res) => {
     const restaurantBorough = req.params.borough;
-    const doc= restaurantBorough ? {borough:restaurantBorough}:{};
-    getResult(doc,res);
-    
+    const doc = restaurantBorough ? { borough: restaurantBorough } : restaurantBorough;
+    getResult(doc, res);
 };
 
-exports.getRestaurantByCuisine = (req,res)=>{
+exports.getRestaurantByCuisine = (req, res) => {
     const restaurantCuisine = req.params.cuisine;
-    const doc= restaurantCuisine ? {cuisine:restaurantCuisine}:{};
-    getResult(doc,res);
+    const doc = restaurantCuisine ? { cuisine: restaurantCuisine } : restaurantCuisine;
+    getResult(doc, res);
 };
 
-const getResult = (doc,res)=>{
-    restaurant.getAllRestaurant(doc,(docs)=>{
-        if(docs.length==0){
+const getResult = (doc, res) => {
+    restaurant.getAllRestaurant(doc, null, (docs) => {
+        if (docs.length == 0) {
             res.status(500).json({});
-        }else{
+        } else {
             res.status(200).json(docs);
         }
     });
 }
-
-
-
-
-
-
-
-
-
-// testing object for read
-class testing {
-    constructor() {
-        this.userid = 1;
-        this.restaurants =
-            [
-                {
-                    _id: 123,
-                    name: "fuck"
-                },
-                {
-                    _id: 124,
-                    name: "fuck2"
-                }
-            ]
-        this.numberOfRestaurant = this.restaurants.length;
-    }
-}
-const testing1 = new testing();  // end of creating testing object
+// End of API
 
 exports.getReadPage = (req, res) => {
-    res.render(
-        'read',
-        testing1
-    );
+    restaurant.getAllRestaurant(undefined, {name:1}, (docs) => {
+        const result = {
+            userid: req.session.userid,
+            numberOfRestaurant: docs.length,
+            restaurants: docs
+        };
+        res.render(
+            'read',
+            result
+        );
+    });
 };
 
 

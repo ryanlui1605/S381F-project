@@ -3,12 +3,12 @@ const formidable = require('formidable');
 const assert = require('assert');
 const getDb = require("../utils/db").getDb;
 
-exports.getAllRestaurant = (criteria,callback)=>{
+exports.getAllRestaurant = (criteria={},filter={},callback)=>{
     const db = getDb();
-    let cursor = db.collection('restaurants').find(criteria);
+    let cursor = db.collection('restaurants').find(criteria,filter);
     cursor.toArray((err,docs)=>{
         assert.equal(err,null);
-        callback(docs);
+        callback(docs); //array
     })
 }
 

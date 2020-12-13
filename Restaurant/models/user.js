@@ -33,7 +33,6 @@ class User {
     }
 
     checkExist(db, criteria, callback) {
-        console.log(criteria);
         db.collection('users').countDocuments(criteria, (err, count) => {
             assert.equal(null, err);
             callback(count);

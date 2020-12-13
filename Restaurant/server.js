@@ -30,7 +30,6 @@ app.use(userRoutes);
 
 //if not requiring homepage or register page, check cookie
 app.use(/\/.+/, (req, res, next) => {
-    console.log(req.session.userid);
     if (!req.session.userid) {
         //userid is empty
         req.session = null;

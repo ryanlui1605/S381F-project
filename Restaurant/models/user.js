@@ -2,10 +2,10 @@ const getDb = require("../utils/db").getDb;
 const assert = require('assert');
 
 class User {
-    constructor(username, password) {
-        // username should be unique
+    constructor(userid, password) {
+        // userid should be unique
         // so we may not need to get the id from database
-        this.username = username;
+        this.userid = userid;
         this.password = password;
     }
 
@@ -17,13 +17,13 @@ class User {
     // handle result in callback
     createNewUser(callback) {
         const db = getDb();
-        //check username exist
-        this.checkExist( db, {"username": this.username }, (count) => {
+        //check userid exist
+        this.checkExist( db, {"userid": this.userid }, (count) => {
             if (count > 0) {
-                //if username exist
+                //if userid exist
                 callback(false);
             } else {
-                //if username not exist
+                //if userid not exist
                 db.collection('users').insertOne(this, (err, results) => {
                     assert.equal(null, err);
                     callback(true);

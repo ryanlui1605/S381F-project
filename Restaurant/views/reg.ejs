@@ -10,7 +10,7 @@
     </header>
     <form name="regform" action="/processreg" onsubmit="return check()" method="POST">
         <label>Name</label>
-        <input name="username" type="text" required />
+        <input name="userid" type="text" required />
         <br />
         <br />
         <label>Password</label>
@@ -30,7 +30,7 @@
         function check() {
             // Validate input at client side
 
-            // get username, password, confirm password
+            // get userid, password, confirm password
             const password = document.forms["regform"]["password"].value;
             const confirm = document.forms["regform"]["confirm"].value;
 

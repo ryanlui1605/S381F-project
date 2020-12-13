@@ -1,7 +1,46 @@
+const restaurant = require('../models/restaurant');
+
+exports.getRestaurantByName = (req,res)=>{
+    const restaurantName = req.params.name;
+    const doc= restaurantName ? {name:restaurantName}:{};
+    getResult(doc,res);
+}
+
+exports.getRestaurantByBorough = (req,res)=>{
+    const restaurantBorough = req.params.borough;
+    const doc= restaurantBorough ? {borough:restaurantBorough}:{};
+    getResult(doc,res);
+    
+};
+
+exports.getRestaurantByCuisine = (req,res)=>{
+    const restaurantCuisine = req.params.cuisine;
+    const doc= restaurantCuisine ? {cuisine:restaurantCuisine}:{};
+    getResult(doc,res);
+};
+
+const getResult = (doc,res)=>{
+    restaurant.getAllRestaurant(doc,(docs)=>{
+        if(docs.length==0){
+            res.status(500).json({});
+        }else{
+            res.status(200).json(docs);
+        }
+    });
+}
+
+
+
+
+
+
+
+
+
 // testing object for read
 class testing {
     constructor() {
-        this.username = 1;
+        this.userid = 1;
         this.restaurants =
             [
                 {

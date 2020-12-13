@@ -5,15 +5,17 @@ const formidable = require('formidable');
 // Login/Home Page
 // Read (user collection)
 exports.getHomePage = (req, res) => {
-    console.log("A user land on Home Page");
-    res.render('index');
+    if (req.session.username) {
+        res.redirect('/read');
+    } else {
+        res.render('index');
+    }
 };
 
 // handle user login
 // success = redirect to homePage
 // fail = redirect to readPage
 exports.processLogin = (req, res) => {
-    // code here
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => {
         const username = fields.username;
@@ -22,6 +24,7 @@ exports.processLogin = (req, res) => {
         user.login((status) => {
             if (status) {
                 req.session.username = username;
+                console.log("processLogin" + req.session.username);
                 res.redirect('/read');
             } else {
                 res.render('loginfail');
@@ -35,7 +38,11 @@ exports.processLogin = (req, res) => {
 // Create user accounts
 //      - Each user account has a userid and password. 
 exports.getRegPage = (req, res) => {
-    res.render('reg');
+    if (req.session.username) {
+        res.redirect('/read');
+    } else {
+        res.render('reg');
+    }
 };
 
 // handle user reg
@@ -54,7 +61,7 @@ exports.processReg = (req, res) => {
         const user = new User(username, password);
         user.createNewUser((status) => {
             if (status) {
-                res.session.username = username;
+                req.session.username = username;
                 res.redirect('/read');
             } else {
                 res.render('regfail');

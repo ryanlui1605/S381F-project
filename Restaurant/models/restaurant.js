@@ -1,8 +1,16 @@
 const fs = require('fs');
 const formidable = require('formidable');
-const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
+const getDb = require("../utils/db").getDb;
 
+exports.getAllRestaurant = (criteria,callback)=>{
+    const db = getDb();
+    let cursor = db.collection('restaurants').find(criteria);
+    cursor.toArray((err,docs)=>{
+        assert.equal(err,null);
+        callback(docs);
+    })
+}
 
 const restaurant = {
     //use after created document
@@ -163,7 +171,6 @@ const initRestaurant = fields => {
     //get from cookies
     restaurant.owner = "ramwong";
 }
-create(null);
 
 
 // Read

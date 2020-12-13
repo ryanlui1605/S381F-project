@@ -4,6 +4,7 @@ const app = express();
 const session = require('cookie-session');
 
 const mongodbConnect = require('./utils/db').mongodbConnect;
+const restaurantApiRoutes = require('./routes/restaurant_api.js');
 const userRoutes = require('./routes/user');
 const restaurantRoutes = require('./routes/restaurnt');
 const key1 = "ui3bqoithj2q4piofmnlskdanmgvm#Q$ty'p1o03jgp'dfbvmdZ:Fmb";
@@ -12,32 +13,7 @@ const key2 = "ifhaosihguiqwgrh98vhnoi3n4tgh309123-.1-3123-o1-.412-312";
 // handler for RESTful services
 // not sure is it correct
 
-app.get(/api\/restaurant\/name\/.*/, (req, res) => {
-    const parseUrl = url.parse(req.url, true);
-
-    //get restaurant name
-    const name = parseUrl.pathname.replace('/api/restaurant/name/', '');
-
-    res.send(name);
-});
-
-app.get(/api\/restaurant\/borough\/.*/, (req, res) => {
-    const parseUrl = url.parse(req.url, true);
-
-    //get restaurant borough
-    const borough = parseUrl.pathname.replace('/api/restaurant/borough/', '');
-
-    res.send(borough);
-})
-
-app.get(/api\/restaurant\/cuisine\/.*/, (req, res) => {
-    const parseUrl = url.parse(req.url, true);
-
-    //get restaurant cuisine
-    const cuisine = parseUrl.pathname.replace('/api/restaurant/cuisine/', '');
-
-    res.send(cuisine);
-})
+app.use(restaurantApiRoutes);
 
 // end of handler for RESTful services
 
@@ -53,20 +29,19 @@ app.use(session({
 app.use(userRoutes);
 
 //if not requiring homepage or register page, check cookie
-app.use(/\/.+/, (req,res,next)=>{
-    if(!req.session.username){  
+app.use(/\/.+/, (req, res, next) => {
+    if (!req.session.username) {
         //username is empty
-        req.session=null;
+        req.session = null;
         res.redirect('/');
-    }else{
+    } else {
         //username is not empty
         next();
     }
 })
 
+
 app.use(restaurantRoutes);
-
-
 
 
 

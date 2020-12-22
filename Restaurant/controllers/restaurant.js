@@ -235,7 +235,7 @@ exports.processChange = (req, res) => {
     createRestaurantObj(req, (restaurantObj) => {
         const id = restaurantObj["_id"];
         const criteria = {'_id':ObjectID(id)};
-        restaurantModel.updateRestaurant(id,
+        restaurantModel.updateRestaurant(criteria,
             { $set: restaurantObj }, (status) => {
                 if (!status) {
                     showFailPage(res, "Edit",

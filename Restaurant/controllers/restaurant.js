@@ -303,13 +303,13 @@ exports.getSearchResultPage = (req, res) => {
         criteria['$and']=[];
     }
     if (name) {
-        criteria['$and'].push({ "name": {'$regex':name}});
+        criteria['$and'].push({ "name": {'$regex': new RegExp(name,"i")}});
     }
     if(borough){
-        criteria['$and'].push({ "borough": {'$regex':borough}});
+        criteria['$and'].push({ "borough": {'$regex':new RegExp(borough,"i")}});
     }
     if(cuisine){
-        criteria['$and'].push({ "cuisine": {'$regex':cuisine}});
+        criteria['$and'].push({ "cuisine": {'$regex':new RegExp(cuisine,"i")}});
     }
 
     showRestaurantList(req, res, criteria, 'searchresult');

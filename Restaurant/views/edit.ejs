@@ -36,13 +36,15 @@
             <label>Zipcode</label>
             <input name="zipcode" type="text" value="<%= address.zipcode %>">
         </p>
-        <p>
-            <label>GPS Coordinates (lon.)</label>
-            <input name="lon" type="text" value="<%= address.coord[0] %>">
-        </p>
+<!--        change html UI position lat lon-->
+<!--        correct lat lon index-->
         <p>
             <label>GPS Coordinates (lat.)</label>
-            <input name="lat" type="text" value="<%= address.coord[1] %>">
+            <input name="lat" type="text" value="<%= address.coord[0] %>">
+        </p>
+        <p>
+            <label>GPS Coordinates (lon.)</label>
+            <input name="lon" type="text" value="<%= address.coord[1] %>">
         </p>
         <p>
             <label>Photo (leave it blank to unchange)</label><br />

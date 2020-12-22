@@ -99,8 +99,8 @@ const createRestaurantObj = (req, callback) => {
             fields.street,
             fields.building,
             fields.zipcode,
-            fields.lon,
             fields.lat,
+            fields.lon,
             [],   //grades
             req.session.userid
         );

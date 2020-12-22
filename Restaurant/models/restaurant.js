@@ -76,7 +76,7 @@ exports.updateRestaurant = (id, action, callback) => {
         delete action["$set"]["_id"];
     }
     db.collection('restaurants').updateOne(
-        { _id: ObjectID(id) },
+        id,
         action,
         (err, result) => {
             assert.equal(err, null);

@@ -179,10 +179,11 @@ exports.processRate = (req, res) => {
     const form = new formidable({ multiples: true });
     const parsedURL = url.parse(req.url, true);
     const id = parsedURL.query["_id"];
+    const objectID = { '_id': ObjectID(id) };
     form.parse(req, (err, fields, files) => {
         const score = fields.score;
         restaurantModel.updateRestaurant(
-            id,
+            objectID,
             {
                 $push: {
                     grades: {

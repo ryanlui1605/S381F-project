@@ -233,7 +233,8 @@ exports.getChangePage = (req, res) => {
 // page to handle editing restaurant document
 exports.processChange = (req, res) => {
     createRestaurantObj(req, (restaurantObj) => {
-        const id = {'_id':ObjectID(restaurantObj["_id"])};
+        const id = restaurantObj["_id"];
+        const criteria = {'_id':ObjectID(id)};
         restaurantModel.updateRestaurant(id,
             { $set: restaurantObj }, (status) => {
                 if (!status) {

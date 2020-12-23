@@ -8,19 +8,19 @@ const ObjectID = require('mongodb').ObjectID;
 // API
 exports.getRestaurantByName = (req, res) => {
     const restaurantName = req.params.name;
-    const doc = restaurantName ? { name: restaurantName } : restaurantName;
+    const doc = restaurantName ? {name: restaurantName} : restaurantName;
     getResult(doc, res);
 }
 
 exports.getRestaurantByBorough = (req, res) => {
     const restaurantBorough = req.params.borough;
-    const doc = restaurantBorough ? { borough: restaurantBorough } : restaurantBorough;
+    const doc = restaurantBorough ? {borough: restaurantBorough} : restaurantBorough;
     getResult(doc, res);
 };
 
 exports.getRestaurantByCuisine = (req, res) => {
     const restaurantCuisine = req.params.cuisine;
-    const doc = restaurantCuisine ? { cuisine: restaurantCuisine } : restaurantCuisine;
+    const doc = restaurantCuisine ? {cuisine: restaurantCuisine} : restaurantCuisine;
     getResult(doc, res);
 };
 
@@ -85,10 +85,10 @@ exports.processCreate = (req, res) => {
 }
 
 const createRestaurantObj = (req, callback) => {
-    const form = new formidable({ multiples: true });
+    const form = new formidable({multiples: true});
     form.parse(req, (err, fields, files) => {
-        if(!fields.name){
-            showFailPage(res,'Create', 'Restaurant name cannot be null');
+        if (!fields.name) {
+            showFailPage(res, 'Create', 'Restaurant name cannot be null');
         }
         const restaurantObj = new restaurantModel.Restaurant(
             fields.name,
@@ -129,7 +129,7 @@ const createRestaurantObj = (req, callback) => {
 exports.getDisplayPage = (req, res) => {
     const parsedURL = url.parse(req.url, true);
     const id = parsedURL.query["_id"];
-    const criteria = { '_id': ObjectID(id) };
+    const criteria = {'_id': ObjectID(id)};
     restaurantModel.getRestaurant(criteria, null, (docs) => {
         if (!docs.length) {
             showFailPage(res, "Display",
@@ -176,10 +176,25 @@ exports.getRatePage = (req, res) => {
 
 // page to handle rating
 exports.processRate = (req, res) => {
-    const form = new formidable({ multiples: true });
+    const form = new formidable({multiples: true});
     const parsedURL = url.parse(req.url, true);
     const id = parsedURL.query["_id"];
-    const objectID = { '_id': ObjectID(id) };
+    const objectID = {'_id': ObjectID(id)};
+    const username = req.session.userid;
+
+    //for loop compare username to objectID grades array user
+    //if rating history has the same name
+    //direct to views fail page
+    //QUESTION: how to access grades.length and (rated username)user:score
+    for (let i = 0; i < gradesLength; i++) {
+        if (username == ratedUserName) {
+            showFailPage(res, "Can not rate twice",
+                "You have rated this restaurant before!"
+            );
+            break;
+        }
+    }
+
     form.parse(req, (err, fields, files) => {
         const score = fields.score;
         restaurantModel.updateRestaurant(
@@ -214,8 +229,8 @@ exports.processRate = (req, res) => {
 exports.getChangePage = (req, res) => {
     const parsedURL = url.parse(req.url, true);
     const id = parsedURL.query["_id"];
-    const criteria = { '_id': ObjectID(id) };
-    restaurantModel.getRestaurant(criteria, { photo: 0, photoMimetype: 0 }, (docs) => {
+    const criteria = {'_id': ObjectID(id)};
+    restaurantModel.getRestaurant(criteria, {photo: 0, photoMimetype: 0}, (docs) => {
         if (!docs.length) {
             showFailPage(res, "Display",
                 "Restaurant maybe deleted"
@@ -234,9 +249,9 @@ exports.getChangePage = (req, res) => {
 exports.processChange = (req, res) => {
     createRestaurantObj(req, (restaurantObj) => {
         const id = restaurantObj["_id"];
-        const criteria = {'_id':ObjectID(id)};
+        const criteria = {'_id': ObjectID(id)};
         restaurantModel.updateRestaurant(criteria,
-            { $set: restaurantObj }, (status) => {
+            {$set: restaurantObj}, (status) => {
                 if (!status) {
                     showFailPage(res, "Edit",
                         "Restaurant maybe deleted"
@@ -256,9 +271,9 @@ exports.processChange = (req, res) => {
 exports.getRemovePage = (req, res) => {
     const parsedURL = url.parse(req.url, true);
     const id = parsedURL.query["_id"];
-    const criteria = { '_id': ObjectID(id) };
+    const criteria = {'_id': ObjectID(id)};
     const username = req.session.userid;
-    restaurantModel.getRestaurant(criteria, { name: 1, owner: 1 }, (docs) => {
+    restaurantModel.getRestaurant(criteria, {name: 1, owner: 1}, (docs) => {
         if (!docs.length) {
             showFailPage(res, "Delete",
                 "Restaurant maybe deleted"
@@ -299,24 +314,24 @@ exports.getSearchResultPage = (req, res) => {
     const cuisine = parsedURL.query['cuisine'];
 
     const criteria = {};
-    if(name||borough||cuisine){
-        criteria['$and']=[];
+    if (name || borough || cuisine) {
+        criteria['$and'] = [];
     }
     if (name) {
-        criteria['$and'].push({ "name": {'$regex': new RegExp(name,"i")}});
+        criteria['$and'].push({"name": {'$regex': new RegExp(name, "i")}});
     }
-    if(borough){
-        criteria['$and'].push({ "borough": {'$regex':new RegExp(borough,"i")}});
+    if (borough) {
+        criteria['$and'].push({"borough": {'$regex': new RegExp(borough, "i")}});
     }
-    if(cuisine){
-        criteria['$and'].push({ "cuisine": {'$regex':new RegExp(cuisine,"i")}});
+    if (cuisine) {
+        criteria['$and'].push({"cuisine": {'$regex': new RegExp(cuisine, "i")}});
     }
 
     showRestaurantList(req, res, criteria, 'searchresult');
 }
 
 const showRestaurantList = (req, res, criteria, page) => {
-    restaurantModel.getRestaurant(criteria, { name: 1 }, (docs) => {
+    restaurantModel.getRestaurant(criteria, {name: 1}, (docs) => {
         const result = {
             userid: req.session.userid,
             restaurants: docs
